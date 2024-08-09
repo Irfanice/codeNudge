@@ -1,0 +1,608 @@
+# Test Case: Generate Two Stories and Verify Navigation by Tapping Each Story
+testCase1:
+  name: "Click first and second story individually"
+  actions:
+    - id: launch_app
+      action: launchApp
+      target: com.example.nudgetest.demoqa1
+
+    - id: tap_user_identifier
+      action: tapOn
+      target:
+        text: "User Identifier"
+
+    # Click on "Track Story"
+    - id: tap_track_story
+      action: tapOn
+      target:
+        text: "Track Story"
+
+    - id: wait_after_track_story
+      action: waitForTimeout
+      timeout: 2000
+
+    - id: assert_story_1
+      action: assertText
+      value: "fgeff"
+
+    - id: assert_story_2
+      action: assertText
+      value: "erfeferfr"
+
+    - id: assert_story_3
+      action: assertText
+      value: "fghrhrgeg"
+
+    - id: assert_favorites
+      action: assertText
+      value: "favorites"
+
+    # Click on first story
+    - id: tap_first_story
+      action: tapOn
+      target:
+        text: "fgeff"
+
+    - id: wait_after_first_story
+      action: waitForTimeout
+      timeout: 2000
+
+    - id: assert_first_story_1
+      action: assertText
+      value: "fgeff"
+
+    - id: assert_first_story_2
+      action: assertText
+      value: "erfeferfr"
+
+    - id: assert_first_story_text
+      action: assertText
+      value: "Text"
+
+    - id: assert_first_story_click_here
+      action: assertText
+      value: "Click Here"
+
+    - id: assert_first_story_countdown
+      action: assertText
+      value: "COUNTDOWN"
+
+    # Click on Second Story verify
+    - id: tap_second_story
+      action: tapOn
+      target:
+        text: "fghrhrgeg"
+
+    - id: wait_after_second_story
+      action: waitForTimeout
+      timeout: 2000
+
+    - id: assert_second_story_1
+      action: assertText
+      value: "fghrhrgeg"
+
+    - id: assert_second_story_favorites
+      action: assertText
+      value: "favorites"
+
+    - id: assert_second_story_click_here
+      action: assertText
+      value: "Click Here"
+
+    # Navigate back to home
+    - id: navigate_back_home
+      action: executeShellCommand
+      command: "adb shell input keyevent 4"
+
+    # Close the app after the test is done
+    - id: close_app
+      action: executeShellCommand
+      command: "adb shell am force-stop com.example.nudgetest.demoqa1"
+
+
+
+# Test Case: Navigate to the First and Second Stories and Verify Button and Hyperlink Navigation
+testCase2:
+  name: "Verify Button and Hyperlink Navigation for each story"
+  actions:
+    - id: launch_app
+      action: launchApp
+      target: com.example.nudgetest.demoqa1
+
+    - id: tap_track_story
+      action: tapOn
+      target:
+        text: "Track Story" #To generate story
+
+    # Start from 1st Story of fgeff to Last story of fghrhrgeg
+
+    # 1st Story - Click Here button
+    - id: tap_first_story
+      action: tapOn
+      target:
+        text: "fgeff"
+
+    - id: assert_first_story_1
+      action: assertText
+      value: "fgeff"
+
+    - id: assert_first_story_2
+      action: assertText
+      value: "erfeferfr"
+
+    - id: assert_first_story_text
+      action: assertText
+      value: "Text"
+
+    - id: assert_first_story_click_here
+      action: assertText
+      value: "Click Here"
+
+    - id: assert_first_story_countdown
+      action: assertText
+      value: "COUNTDOWN"
+
+    - id: tap_click_here_button
+      action: tapOn
+      target:
+        text: "Click Here"
+
+    - id: wait_after_click_here
+      action: waitForTimeout
+      timeout: 5000 # Wait 5 seconds for the browser to load
+
+    - id: check_browser_activity
+      action: executeShellCommand
+      command: "adb shell 'dumpsys activity activities | grep -i http'"
+
+    # expected URL is in the output
+    - id: assert_first_story_url
+      action: assertText
+      value: "https://www.figma.com/file/7fONwRMQxuv7PtWpq9IycU/Nudge-Redesign?type=design&node-id=16014-94421&mode=design&t=ZkS3jQUaDcStqRrw-0&fuid=1277802271011876587"
+
+    - id: navigate_back_first_story
+      action: executeShellCommand
+      command: "adb shell input keyevent 4" # Navigate back to 1st story of 1st person
+
+    # 2nd Story - Swipe from bottom to top
+    # Tap on the right side of the screen - Navigate to 2nd story
+    - id: tap_second_story
+      action: tap
+      x: 900 # right side
+      y: 500 # middle
+
+    - id: assert_second_story_play
+      action: assertText
+      value: "Play"
+
+    - id: assert_second_story_bigbasket
+      action: assertText
+      value: "bigbasket"
+
+    - id: assert_second_story_swipe_up
+      action: assertText
+      value: "Swipe Up"
+
+    # Swipe up from the bottom of the screen
+    - id: swipe_up_second_story
+      action: swipe
+      direction: up
+      start_x: 540   # X-coordinate (center horizontally, adjust as needed)
+      start_y: 1800  # Y-coordinate (start from near the bottom of the screen, adjust as needed)
+      end_x: 540     # X-coordinate (end at the same horizontal position)
+      end_y: 1200    # Y-coordinate (end at a higher position, adjust as needed)
+      duration: 500  # Duration of the swipe in milliseconds
+
+    - id: check_browser_activity_second_story
+      action: executeShellCommand
+      command: "adb shell 'dumpsys activity activities | grep -i http'"
+
+    # expected URL is in the output
+    - id: assert_second_story_url
+      action: assertText
+      value: "https://wallpaperaccess.in/wallpaper/indian-cricket-wallpapers-pod"
+
+    - id: navigate_back_second_story
+      action: executeShellCommand
+      command: "adb shell input keyevent 4"
+
+    # 3rd Story - Only verify the Text
+    # Tap on the right side of the screen
+    - id: tap_third_story
+      action: tap
+      x: 900 # right side
+      y: 500 # middle
+
+    - id: assert_third_story_text
+      action: assertText
+      value: "Text"
+
+    # 4th Story [2nd Person's 1st story] - Click Here button
+    # Tap on the right side of the screen
+    - id: tap_fourth_story
+      action: tap
+      x: 900 # right side
+      y: 500 # middle
+
+    - id: assert_fourth_story_1
+      action: assertText
+      value: "fghrhrgeg"
+
+    - id: assert_fourth_story_favorites
+      action: assertText
+      value: "favorites"
+
+    - id: assert_fourth_story_click_here
+      action: assertText
+      value: "Click Here"
+
+    - id: tap_click_here_button_fourth_story
+      action: tapOn
+      target:
+        text: "Click Here"
+
+    - id: check_browser_activity_fourth_story
+      action: executeShellCommand
+      command: "adb shell 'dumpsys activity activities | grep -i http'"
+
+    # expected URL is in the output
+    - id: assert_fourth_story_url
+      action: assertText
+      value: "https://wallpaperaccess.in/wallpaper/indian-cricket-wallpapers-pod"
+
+    - id: navigate_back_fourth_story
+      action: executeShellCommand
+      command: "adb shell input keyevent 4"
+
+    # 5th Story - Swipe up button
+    # Tap on the right side of the screen
+    - id: tap_fifth_story
+      action: tap
+      x: 900 # right side
+      y: 500 # middle
+
+    - id: assert_fifth_story_play
+      action: assertText
+      value: "Play"
+
+    - id: assert_fifth_story_bigbasket
+      action: assertText
+      value: "bigbasket"
+
+    - id: assert_fifth_story_swipe_up
+      action: assertText
+      value: "Swipe Up"
+
+    # Swipe up from the bottom of the screen
+    - id: swipe_up_fifth_story
+      action: swipe
+      direction: up
+      start_x: 540   # X-coordinate (center horizontally, adjust as needed)
+      start_y: 1800  # Y-coordinate (start from near the bottom of the screen, adjust as needed)
+      end_x: 540     # X-coordinate (end at the same horizontal position)
+      end_y: 1200    # Y-coordinate (end at a higher position, adjust as needed)
+      duration: 500  # Duration of the swipe in milliseconds
+
+    - id: check_browser_activity_fifth_story
+      action: executeShellCommand
+      command: "adb shell 'dumpsys activity activities | grep -i http'"
+    # expected URL is in the output
+    - id: assert_fifth_story_url
+      action: assertText
+      value: "https://wallpaperaccess.in/wallpaper/indian-cricket-wallpapers-pod"
+
+    - id: navigate_back_fifth_story
+      action: executeShellCommand
+      command: "adb shell input keyevent 4"
+
+    # 6th Story - Only verify the Text
+    # Tap on the right side of the screen
+    - id: tap_sixth_story
+      action: tap
+      x: 900 # right side
+      y: 500 # middle
+
+    - id: assert_sixth_story_text
+      action: assertText
+      value: "Text"
+
+    # 7th Story - Verify Countdown Text
+    # Tap on the right side of the screen
+    - id: tap_seventh_story
+      action: tap
+      x: 900 # right side
+      y: 500 # middle
+
+    - id: assert_seventh_story_countdown
+      action: assertText
+      value: "COUNTDOWN"
+
+    # Close the app after the test is done
+    - id: close_app
+      action: executeShellCommand
+      command: "adb shell am force-stop com.example.nudgetest.demoqa1"
+
+
+# Test Case: Cancel button "X" inside the story
+testCase3:
+  name: "Click cancel button and navigate back to Home screen"
+  actions:
+    - id: launch_app
+      action: launchApp
+      target: com.example.nudgetest.demoqa1
+
+    - id: tap_track_story
+      action: tapOn
+      target:
+        text: "Track Story"
+
+    # Click on first story
+    - id: tap_first_story
+      action: tapOn
+      target:
+        text: "fgeff"
+
+    - id: wait_after_first_story
+      action: waitForTimeout
+      timeout: 2000
+
+    # Tap the "X" cancel button on the top-right corner
+    - id: tap_cancel_button_first_story
+      action: tap
+      x: 1050   # Example X-coordinate for the right edge (adjust based on screen width)
+      y: 100    # Example Y-coordinate near the top (adjust based on screen height)
+
+    - id: assert_nudge_stories_first
+      action: assertText
+      value: "Nudge Stories"
+
+    # Click on second story
+    - id: tap_second_story
+      action: tapOn
+      target:
+        text: "fghrhrgeg"
+
+    - id: wait_after_second_story
+      action: waitForTimeout
+      timeout: 2000
+
+    # Tap the "X" cancel button on the top-right corner
+    - id: tap_cancel_button_second_story
+      action: tap
+      x: 1050   # Example X-coordinate for the right edge (adjust based on screen width)
+      y: 100    # Example Y-coordinate near the top (adjust based on screen height)
+
+    - id: assert_nudge_stories_second
+      action: assertText
+      value: "Nudge Stories"
+
+    # Close the app after the test is done
+    - id: close_app
+      action: executeShellCommand
+      command: "adb shell am force-stop com.example.nudgetest.demoqa1"
+
+
+# Test Case: Swipe Right to Left on the First Person's First Story -> Navigate Directly to the Second Person's First Story
+testCase4:
+  name: "Swipe right to left on 1st story"
+  actions:
+    - id: launch_app
+      action: launchApp
+      target: com.example.nudgetest.demoqa1
+
+    - id: tap_track_story
+      action: tapOn
+      target:
+        text: "Track Story"
+
+    # Click on first story
+    - id: tap_first_story
+      action: tapOn
+      target:
+        text: "fgeff"
+
+    # Swipe left from the right side of the screen
+    - id: swipe_left_first_story
+      action: swipe
+      direction: left
+      start_x: 1000   # X-coordinate starting near the right edge (adjust based on screen width)
+      start_y: 960    # Y-coordinate starting at the middle of the screen (adjust as needed)
+      end_x: 100      # X-coordinate ending near the left edge (adjust based on screen width)
+      end_y: 960      # Y-coordinate ending at the same vertical position (adjust as needed)
+      duration: 500   # Duration of the swipe in milliseconds
+
+    # Verify successful reach 2nd person's 1st story
+    - id: assert_second_person_story_1
+      action: assertText
+      value: "fghrhrgeg"
+
+    - id: assert_second_person_story_favorites
+      action: assertText
+      value: "favorites"
+
+    - id: assert_second_person_story_click_here
+      action: assertText
+      value: "Click Here"
+
+    # Close the app after the test is done
+    - id: close_app
+      action: executeShellCommand
+      command: "adb shell am force-stop com.example.nudgetest.demoqa1"
+
+
+# Test Case: [Tap left on 1st person's 1st story] and [Tap right on 2nd person's last story]] navigate us to Home
+testCase5:
+  name: "Swipe right to left on 1st story"
+  actions:
+    - id: launch_app
+      action: launchApp
+      target: com.example.nudgetest.demoqa1
+
+    - id: tap_track_story
+      action: tapOn
+      target:
+        text: "Track Story"
+
+    # Click on left, first person's first story
+    - id: tap_first_story
+      action: tapOn
+      target:
+        text: "fgeff"
+
+    - id: assert_first_story_click_here
+      action: assertText
+      value: "Click Here"
+
+    - id: tap_left_first_story
+      action: tap
+      x: 100    # X-coordinate near the left edge of the screen (adjust based on screen width)
+      y: 960    # Y-coordinate at the middle of the screen (adjust as needed)
+
+    # Verify successful navigation to Home screen
+    - id: assert_nudge_stories_first
+      action: assertText
+      value: "Nudge Stories"
+
+    # Click on Second person story
+    - id: tap_second_story
+      action: tapOn
+      target:
+        text: "fghrhrgeg"
+
+    - id: assert_second_story_click_here
+      action: assertText
+      value: "Click Here"
+
+    # Tap on the right side of the screen three times
+    - id: tap_right_second_story_1
+      action: tap
+      x: 1000   # X-coordinate near the right edge (adjust based on screen width)
+      y: 960    # Y-coordinate at the middle of the screen (adjust as needed)
+
+    - id: tap_right_second_story_2
+      action: tap
+      x: 1000   # X-coordinate near the right edge (adjust based on screen width)
+      y: 960    # Y-coordinate at the middle of the screen (adjust as needed)
+
+    - id: tap_right_second_story_3
+      action: tap
+      x: 1000   # X-coordinate near the right edge (adjust based on screen width)
+      y: 960    # Y-coordinate at the middle of the screen (adjust as needed)
+
+    # Last story of 2nd person
+    - id: assert_second_story_countdown
+      action: assertText
+      value: "COUNTDOWN"
+
+    - id: tap_right_last_story
+      action: tap
+      x: 1000   # X-coordinate near the right edge (adjust based on screen width)
+      y: 960    # Y-coordinate at the middle of the screen (adjust as needed)
+
+    # Verify successful navigation to Home screen
+    - id: assert_nudge_stories_second
+      action: assertText
+      value: "Nudge Stories"
+
+    # Close the app after the test is done
+    - id: close_app
+      action: executeShellCommand
+      command: "adb shell am force-stop com.example.nudgetest.demoqa1"
+
+
+# Test Case: Generate 2 story and Click Delete User button -> Verify 2story should disappear and should not present on Home Screen
+testCase6:
+  name: "Delete logged in User and verify the Story"
+  actions:
+    - id: launch_app
+      action: launchApp
+      target: com.example.nudgetest.demoqa1
+
+    - id: tap_track_story
+      action: tapOn
+      target:
+        text: "Track Story"
+
+    # Generate 2 stories in Home (assuming this is done manually or by another action)
+    - id: assert_story_1
+      action: assertText
+      target:
+        text: "fgeff"
+
+    - id: assert_story_2
+      action: assertText
+      target:
+        text: "fghrhrgeg"
+
+    # Delete the user
+    - id: tap_delete_user
+      action: tapOn
+      target:
+        text: "Delete User"
+
+    # Verify the stories are not displayed on the home screen
+    - id: assert_story_1_not_present
+      action: assertTextNotPresent
+      target:
+        text: "fgeff"
+
+    - id: assert_story_2_not_present
+      action: assertTextNotPresent
+      target:
+        text: "fghrhrgeg"
+
+    # Close the app after the test is done
+    - id: close_app
+      action: executeShellCommand
+      command: "adb shell am force-stop com.example.nudgetest.demoqa1"
+
+
+  # Test Case: Click left from 2nd person's 1st story -> Should Navigate to -> 1st person's Last story
+testCase7:
+  name: "Story Navigation backwards"
+  actions:
+    - id: launch_app
+      action: launchApp
+      target: com.example.nudgetest.demoqa1
+
+    # Click on Second person story
+    - id: tap_second_story
+      action: tapOn
+      target:
+        text: "fghrhrgeg"
+    - id: assert_second_story_click_here
+      action: assertText
+      target:
+        text: "Click Here"
+
+    # Click on left, Second person's first story
+    - id: tap_left_second_story
+      action: tap
+      x: 100    # X-coordinate near the left edge of the screen (adjust based on screen width)
+      y: 960    # Y-coordinate at the middle of the screen (adjust as needed)
+
+    # 1st person's last story assert
+    - id: tap_right_first_story_last
+      action: tap
+      x: 900    # X-coordinate near the right edge (adjust based on screen width)
+      y: 500    # Y-coordinate at the middle of the screen (adjust as needed)
+    - id: assert_first_story_last_text
+      action: assertText
+      target:
+        text: "Text"
+
+    # Should not display the 1st person's 1st story
+    - id: assert_first_story_not_present
+      action: assertTextNotPresent
+      target:
+        text: "Click Here"
+    - id: assert_countdown_not_present
+      action: assertTextNotPresent
+      target:
+        text: "COUNTDOWN"
+
+    # Close the app after the test is done
+    - id: close_app
+      action: executeShellCommand
+      command: "adb shell am force-stop com.example.nudgetest.demoqa1"
+

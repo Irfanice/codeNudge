@@ -1,0 +1,25 @@
+Manually found few bugs
+
+Not a bug but mentioning: Dark mode not handled
+
+Track Story
+1. An existing user generates 2 stories -> Clicks the Delete button, but the story of the deleted user is still
+displayed -> The session should be terminated.
+
+2. When clicking left on the second person's first story, it should navigate to the first person's last story.
+Currently, it navigates to the first person's first story.
+
+UI Bug:
+3. The second story’s display picture (DP) appears on the landing page, but when we click on the story and open it,
+ the second story’s DP is not displayed at the top left.
+
+Track Quiz
+4. When taking a quiz with a 60-second timer per question, if you close the app while answering a question,
+the timer continues to run in the background for that question. For example, if you close the app during the first
+question and reopen it after 5 minutes, the quiz will resume from the second question
+
+5. Edge case: When increasing the font and display size to large, the button text shrinks downward within the
+button. The UI should handle this properly.
+
+Common
+6. Landscape mode is not responsive
