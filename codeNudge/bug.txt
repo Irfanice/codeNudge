@@ -22,4 +22,4 @@ question and reopen it after 5 minutes, the quiz will resume from the second que
 button. The UI should handle this properly.
 
 Common
-6. Landscape mode is not responsive
+6. Landscape mode is not responsive [Handle or resctrict landscape mode]
