@@ -1,147 +1,89 @@
-# install the APK
-#app:
-#  install: C:\Users\moham\Downloads\app-release.apk
-
 # Test Case: Verifying the default home page content
-testCase1:
-  name: "Default Home Page Test"
-  actions:
-    - launchApp: com.example.nudgetest.demoqa1
-    - assertText:
-        text: "Nudge Stories"
-    - repeat:
-        times: 5
-        actions:
-          - swipe:
-              direction: right
-    - assertText:
-        text: "Track Story"
-    - assertText:
-        text: "User Identifier"
-    - assertText:
-        text: "Track Quiz"
-    - assertText:
-        text: "Delete User"
-    - executeShellCommand:
-        command: "adb shell am force-stop com.example.nudgetest.demoqa1"
+appId: com.example.nudgetest_demoqa1
+---
+- launchApp
 
-# Test Case: Verify Track Story and Track Quiz buttons are clickable but non-functional for new users [Not registered user]
-testCase2:
-  name: "Button Click Functionality Test - New User"
-  actions:
-    - launchApp: com.example.nudgetest.demoqa1
-    - tapOn:
-        text: "Track Story"
-    - waitForTimeout:
-        timeout: 2000
-    - assertText:
-        text: "Track Story"
-    - tapOn:
-        text: "Track Quiz"
-    - waitForTimeout:
-        timeout: 2000
-    - assertText:
-        text: "Track Quiz"
-    - executeShellCommand:
-        command: "adb shell am force-stop com.example.nudgetest.demoqa1"
+- assertVisible: Nudge Stories
 
-# Test Case: Verify Track Story and Track Quiz buttons are clickable but functional for Logged in user
-testCase3:
-  name: "Button Click Functionality Test - Existing User"
-  actions:
-    - launchApp: com.example.nudgetest.demoqa1
-    - tapOn:
-        text: "User Identifier"
-    - tapOn:
-        text: "Track Story"
-    - waitForTimeout:
-        timeout: 2000
-    - assertText:
-        text: "fgeff"
-    - assertText:
-        text: "fghrhrgeg"
-    - tapOn:
-        text: "Track Quiz"
-    - waitForTimeout:
-        timeout: 2000
-    - assertText:
-        text: "MY REWARDS"
-    - assertText:
-        text: "START QUIZ"
-    - executeShellCommand:
-      command: "adb shell input keyevent 4"
-    - executeShellCommand:
-        command: "adb shell am force-stop com.example.nudgetest.demoqa1"
+- assertVisible: "Track Story"
+- assertVisible: "User Identifier"
+- assertVisible: "Track Quiz"
+- assertVisible: "Delete User"
 
-# Test Case: Close the app, reopen from recent apps, then verify the stories are displaying
-testCase4:
-  name: "Close and reopen app from recent apps"
-  actions:
-    - launchApp: com.example.nudgetest.demoqa1
-    - executeShellCommand:
-        command: "adb shell input keyevent 3" # Go to the device home screen
-    - executeShellCommand:
-        command: "adb shell input keyevent 187" # Recent apps button
-    - executeShellCommand:
-        command: "adb shell input keyevent 79" # Simulate tapping on the app in recent apps
-    - assertText:
-        text: "fgeff"
-    - assertText:
-        text: "fghrhrgeg"
-    - tapOn:
-        text: "Track Quiz"
-    - assertText:
-        text: "MY REWARDS"
-    - assertText:
-        text: "START QUIZ"
-    - executeShellCommand:
-      command: "adb shell input keyevent 4"
-    - executeShellCommand:
-        command: "adb shell am force-stop com.example.nudgetest.demoqa1"
+- swipe: #with the help of x and y coordinates
+    start: 752, 1038
+    end: 321, 999
 
-# Test Case: Kill the app and reopen it, then verify the stories are not displaying
-testCase5:
-  name: "Kill and reopen app, then verify the stories are displayed"
-  actions:
-    - launchApp: com.example.nudgetest.demoqa1
-    - executeShellCommand:
-        command: "adb shell am force-stop com.example.nudgetest.demoqa1"
-    - launchApp: com.example.nudgetest.demoqa1
-    - assertTextNotPresent:
-        text: "fgeff"
-    - assertTextNotPresent:
-        text: "fghrhrgeg"
-    - tapOn:
-        text: "Track Story"
-    - waitForTimeout:
-        timeout: 2000
-    - assertText:
-        text: "fgeff"
-    - assertText:
-        text: "fghrhrgeg"
-    - tapOn:
-        text: "Track Quiz"
-    - waitForTimeout:
-        timeout: 2000
-    - assertText:
-        text: "MY REWARDS"
-    - assertText:
-        text: "START QUIZ"
-    - executeShellCommand:
-      command: "adb shell input keyevent 4"
-    - executeShellCommand:
-        command: "adb shell am force-stop com.example.nudgetest.demoqa1"
+#Clicking Track Story and Track Quiz for not - registered User
+- tapOn:
+    text: "Track Story"
+- assertNotVisible:
+    text: "Fruits"
+- tapOn:
+    text: "Track Quiz"
+- assertNotVisible:
+    text: "START QUIZ"
 
-# Test Case: Verify screen rotation to landscape mode and check Home content
-testCase6:
-  name: "Verify screen rotation to landscape mode and check content"
-  actions:
-    - launchApp: com.example.nudgetest.demoqa1
-    - waitForTimeout:
-        timeout: 5000
-    - executeShellCommand:
-        command: "adb shell settings put system user_rotation 1"
-    - waitForTimeout:
-        timeout: 2000
-    - executeShellCommand:
-        command: "adb shell am force-stop com.example.nudgetest.demoqa1"
+
+#Verifying for logged in User
+- tapOn:
+    text: "User Identifier"
+- tapOn:
+    text: "Track Story"
+- assertVisible:
+    text: "Fresh Vegetables\nVegetables"
+- assertVisible:
+    text: "Fruits"
+- tapOn:
+    text: "Track Quiz"
+- assertVisible:
+    text: "START QUIZ"
+
+- stopApp
+- launchApp
+
+#killing the app and relaunching to verify the Story is still visible for logged in User
+- killApp
+- launchApp
+- extendedWaitUntil:
+    visible: "Nudge Stories"
+- assertNotVisible:
+    text: "Fruits"
+
+#Re-verifying the logged in user can able to generate story after killing and reopeining the app
+- tapOn:
+    text: "Track Story"
+- assertVisible:
+    text: "Fruits"
+
+
+#killing the app and relaunching
+- launchApp
+- extendedWaitUntil:
+    visible: "Nudge Stories"
+#Verifying the Delete flow
+- tapOn:
+    text: "Delete User"
+- tapOn:
+    text: "Track Story"
+- assertNotVisible:
+    text: "Fruits"
+- tapOn:
+    text: "Track Quiz"
+- assertNotVisible:
+    text: "START QUIZ"
+
+#Known failed case - Delete user should kill the generated stories
+- tapOn:
+      text: "User Identifier"
+- tapOn:
+      text: "Track Story"
+- tapOn:
+      text: "Delete User"
+- assertNotVisible:
+      text: "Fruits"
+- killApp
+
+
+
+
