@@ -1,1157 +1,490 @@
 # Test Case: New Login User  -> Verifying Track quiz page's Content
-testCase1:
-  name: "Track Quiz page Content and button navigation"
-  actions:
-    - launchApp: com.example.nudgetest.demoqa1
-    - tapOn:
-        text: "User Identifier"
-    # Click on "Track Quiz"
-    - tapOn:
-        text: "Track Quiz"
-    - waitForTimeout:
-        timeout: 2000
-    - assertText:
-        text: "Play"
-    - assertText:
-        text: "bigbasket"
-    - assertText:
-        text: "Follow the Rules :"
-    - assertText:
-        text: "1. Preparation"
-    - assertText:
-        text: "2. Understand the format"
-    - assertText:
-        text: "3. Technical Check"
-    - assertText:
-        text: "4. Read Instruction Carefully"
-    - assertText:
-        text: "5. Time Management"
-    - assertText:
-        text: "6. Answer Easy Question First"
-    - assertText:
-        text: "7. Stay Calm and Focused"
-    - assertText:
-        text: "8. Read Questions Thoroughly"
-    - assertText:
-        text: "9. Review Your Answers"
-    - assertText:
-        text: "10. Don't Overthink"
-    - assertText:
-        text: "My REWARDS"
-    - assertText:
-        text: "START QUIZ" #This button chnage once you complete the quiz
-
-    # Close the app after the test is done
-    - executeShellCommand:
-        command: "adb shell am force-stop com.example.nudgetest.demoqa1"
-
-
-# Test Case: New login user -> Verifying the My Rewards page's content and button navigation
-testCase2:
-  name: "Track Quiz page's My rewards button navigation"
-  actions:
-    - launchApp: com.example.nudgetest.demoqa1
-    - tapOn:
-        text: "Track Quiz"
-
-    #My Rewards page - Content and Back button navigation
-    - tapOn:
-        text: "MY REWARDS"
-    - waitForTimeout:
-        timeout: 2000
-    - assertText:
-        text: "My Rewards"
-    - assertText:
-        text: "You haven't recevied any rewards yet."
-    - assertText:
-        text: "Play the quiz to earn rewards!"
-    - assertText:
-        text: "BACK TO HOME"
-
-    # Tap the top left corner of the screen to navigate back
-    - action: tap
-      x: 50   # X-coordinate near the left edge (adjust as needed)
-      y: 100  # Y-coordinate near the top edge (adjust as needed)
-
-    - assertText:
-        text: "My REWARDS"
-    - assertText:
-        text: "START QUIZ" #This button chnage once you complete the quiz
-
-    #My Rewards page - Back To Home page button navigation verification
-    - tapOn:
-        text: "MY REWARDS"
-    - tapOn:
-        text: "BACK TO HOME"
-
-      #verify successfuk navigation to Home screen
-    - assertText:
-        text: "Nudge Stories"
-
-
-    #Test case: New login user -> Start quiz -> Verify back navigation restriction inside the quiz 1 to 10
-    # Forward and backward options are clickable inside the quiz but restricted, with no actual navigation.
-testCase3:
-  name: "Track Quiz New login User - Verifying the Navigation inside the Quiz "
-  actions:
-    - launchApp: com.example.nudgetest.demoqa1
-    - tapOn:
-        text: "Track Quiz"
-
-    - tapOn:
-        text: "START QUIZ"
-
-      #1st Quiz Question
-    - assertText:
-        text: "What is the capital of France?"
-
-    - executeShellCommand: #try to navigate back
-      command: "adb shell input keyevent 4"
-    - waitForTimeout:
-        timeout: 2000
-    - assertText:
-        text: "What is the capital of France?"
-
-
-    - tapOn:
-        selector: "*[content-desc='Navigate Left']" # Adjust this selector as needed
-    - waitForTimeout:
-        timeout: 2000
-    - assertText:
-        text: "What is the capital of France?"
-
-    - tapOn:
-        selector: "*[content-desc='Navigate Right']" # Adjust this selector based on your app
-    - waitForTimeout:
-        timeout: 2000
-    - assertText:
-        text: "What is the capital of France?"
-
-    # Close the app after the test is done
-    - executeShellCommand:
-        command: "adb shell am force-stop com.example.nudgetest.demoqa1"
-
-
-
-  # Test Case: New login user -> Start quiz -> Select correct answers for all questions to score 10/10 and verify the My Rewards page.
-testCase4:
-  name: "Track Quiz New login User - Verifying the Navigation inside the Quiz "
-  actions:
-    - launchApp: com.example.nudgetest.demoqa1
-    - tapOn:
-        text: "Track Quiz"
-
-    - tapOn:
-        text: "START QUIZ"
-
-      #1st Quiz Question
-    - id: verify_question_text_1
-      action: assert_text
-      value: "What is the capital of France?"
-
-    - id: verify_option_a_1
-      action: assert_text
-      value: "Berlin"
-
-    - id: verify_option_b_1
-      action: assert_text
-      value: "Madrid"
-
-    - id: verify_option_c_1
-      action: assert_text
-      value: "Paris"
-
-    - id: verify_option_d_1
-      action: assert_text
-      value: "Rome"
-
-    #Answer
-    - id: click_option_c_1
-      action: click
-      target: "c) Paris"
-
-    #2nd Quiz Question
-    - id: verify_question_text_2
-      action: assert_text
-      value: "Which element has the chemical symbol 'O'?"
-
-    - id: verify_option_a_2
-      action: assert_text
-      value: "Gold"
+appId: com.example.nudgetest_demoqa1
+---
+- launchApp
+
+- assertVisible: Nudge Stories
+- tapOn:
+    text: "Delete User"
+- tapOn:
+    text: "User Identifier"
+- tapOn:
+    text: "Track Quiz"
+- assertVisible: "Follow the Rules :"
+- assertVisible: "1. Preparation"
+- assertVisible: "2. Understand the format"
+- assertVisible: "3. Technical Check"
+- assertVisible: "4. Read Instructions Carefully"
+- assertVisible: "5. Time Management"
+- assertVisible: "6. Answer Easy Questions First"
+- assertVisible: "7. Stay Calm and Focused"
+- assertVisible: "8. Read Questions Thoroughly"
+- assertVisible: "9. Review Your Answers"
+- assertVisible: "10. Don’t Overthink"
+- assertVisible: "MY REWARDS"
+- assertVisible: "START QUIZ"
+
+#  Verify the My rewards for the fresh user
+- tapOn:
+    text: "MY REWARDS"
+
+#Verifying the content inside the My reward page
+- assertVisible: "My Rewards"
+- assertVisible: "You haven't received any rewards yet.
+
+    Play the quiz to earn rewards!"
+
+- assertVisible: "BACK TO HOME"
+
+- tapOn:
+    point: "7%,9%"
+- assertVisible: "MY REWARDS"
+- assertVisible: "START QUIZ"
+
+#  Verifying the back to Home button on My reward page
+- tapOn:
+    text: "MY REWARDS"
+
+- tapOn:
+    text: "BACK TO HOME"
+- assertVisible:
+    text: "User Identifier"
+- assertVisible:
+    text: "Track Story"
+
+#Now Verifying with start quiz and right answers 10/ 10
+
+- tapOn:
+    text: "Track Quiz"
+
+- tapOn:
+    text: "START QUIZ"
+
+# 1st Quiz Question
+- assertVisible: "What is the capital of France?"
+
+- assertVisible: "a) Berlin"
+- assertVisible: "b) Madrid"
+- assertVisible: "c) Paris"
+- assertVisible: "d) Rome"
+
+# Answer
+- tapOn:
+    point: "50%,74%" # c) Paris
+
+# 2nd Quiz Question
+- assertVisible: "Which element has the chemical symbol 'O'?"
+
+- assertVisible: "a) Gold"
+- assertVisible: "b) Oxygen"
+- assertVisible: "c) Osmium"
+- assertVisible: "d) Oganesson"
+
+# Answer
+- tapOn:
+    point: "50%,64%" # b) Oxygen
+
+# 3rd Quiz Question
+- assertVisible: "Who wrote 'Romeo and Juliet'?"
+
+- assertVisible: "a) Mark Twain"
+- assertVisible: "b) Charles Dickens"
+- assertVisible: "c) William Shakespeare"
+- assertVisible: "d) Jane Austen"
+
+# Answer
+- tapOn:
+    point: "50%,74%" # c) William Shakespeare
+
+# 4th Quiz Question
+- assertVisible: "What is the largest planet in our solar system?"
+
+- assertVisible: "a) Earth"
+- assertVisible: "b) Mars"
+- assertVisible: "c) Jupiter"
+- assertVisible: "d) Saturn"
+
+# Answer
+- tapOn:
+    point: "50%,74%" # c) Jupiter
 
-    - id: verify_option_b_2
-      action: assert_text
-      value: "Oxygen"
-
-    - id: verify_option_c_2
-      action: assert_text
-      value: "Osmium"
-
-    - id: verify_option_d_2
-      action: assert_text
-      value: "Oganesson"
-
-    #Answer
-    - id: click_option_b_2
-      action: click
-      target: "b) Oxygen"
-
-
-      #3rd Quiz Question
-    - id: verify_question_text_3
-      action: assert_text
-      value: "Who wrote 'Romeo and Juliet'?"
-
-    - id: verify_option_a_3
-      action: assert_text
-      value: "Mark Twain"
-
-    - id: verify_option_b_3
-      action: assert_text
-      value: "Charles Dickens"
-
-    - id: verify_option_c_3
-      action: assert_text
-      value: "William Shakespeare"
-
-    - id: verify_option_d_3
-      action: assert_text
-      value: "Jane Austen"
-
-    #Answer
-    - id: click_option_c_3
-      action: click
-      target: "c) William Shakespeare"
-
-      #4th Quiz Question
-    - id: verify_question_text_4
-      action: assert_text
-      value: "What is the largest planet in our solar system?"
-
-    - id: verify_option_a_4
-      action: assert_text
-      value: "Earth"
-
-    - id: verify_option_b_4
-      action: assert_text
-      value: "Mars"
-
-    - id: verify_option_c_4
-      action: assert_text
-      value: "Jupiter"
-
-    - id: verify_option_d_4
-      action: assert_text
-      value: "Saturn"
-
-    #Answer
-    - id: click_option_c_4
-      action: click
-      target: "c) Jupiter"
-
-
-      #5th Quiz Question
-    - id: verify_question_text_5
-      action: assert_text
-      value: "In which year did the Titanic sink?"
-
-    - id: verify_option_a_5
-      action: assert_text
-      value: "1905"
-
-    - id: verify_option_b_5
-      action: assert_text
-      value: "1912"
-
-    - id: verify_option_c_5
-      action: assert_text
-      value: "1918"
-
-    - id: verify_option_d_5
-      action: assert_text
-      value: "1923"
-
-    #Answer
-    - id: click_option_b_5
-      action: click
-      target: "b) 1912"
-
-
-
-      #6th Quiz Question
-    - id: verify_question_text_6
-      action: assert_text
-      value: "What is the smallest prime number?"
-
-    - id: verify_option_a_6
-      action: assert_text
-      value: "0"
-
-    - id: verify_option_b_6
-      action: assert_text
-      value: "1"
-
-    - id: verify_option_c_6
-      action: assert_text
-      value: "2"
-
-    - id: verify_option_d_6
-      action: assert_text
-      value: "3"
-
-    #Answer
-    - id: click_option_c_6
-      action: click
-      target: "c) 2"
-
-
-      #7th Quiz Question
-    - id: verify_question_text_7
-      action: assert_text
-      value: "Who painted the Mona Lisa?"
-
-    - id: verify_option_a_7
-      action: assert_text
-      value: "Vincent van Gogh"
-
-    - id: verify_option_b_7
-      action: assert_text
-      value: "Pablo Picasso"
-
-    - id: verify_option_c_7
-      action: assert_text
-      value: "Leonardo da Vinci"
-
-    - id: verify_option_d_7
-      action: assert_text
-      value: "Claude Monet"
-
-    #Answer
-    - id: click_option_c_7
-      action: click
-      target: "c) Leonardo da Vinci"
-
-
-      #8th Quiz Question
-    - id: verify_question_text_8
-      action: assert_text
-      value: "What is the main ingredient in guacamole?"
-
-    - id: verify_option_a_8
-      action: assert_text
-      value: "Tomato"
-
-    - id: verify_option_b_8
-      action: assert_text
-      value: "Avocado"
-
-    - id: verify_option_c_8
-      action: assert_text
-      value: "Onion"
-
-    - id: verify_option_d_8
-      action: assert_text
-      value: "Lemon"
-
-    #Answer
-    - id: click_option_b_8
-      action: click
-      target: "b) Avocado"
-
-
-      #9th Quiz Question
-    - id: verify_question_text_9
-      action: assert_text
-      value: "Which country is known as the Land of the Rising Sun?"
-
-    - id: verify_option_a_9
-      action: assert_text
-      value: "China"
-
-    - id: verify_option_b_9
-      action: assert_text
-      value: "Japan"
-
-    - id: verify_option_c_9
-      action: assert_text
-      value: "Thailand"
-
-    - id: verify_option_d_9
-      action: assert_text
-      value: "South Korea"
-
-    #Answer
-    - id: click_option_b_9
-      action: click
-      target: "b) Japan"
-
-
-      #10th Quiz Question
-    - id: verify_question_text_10
-      action: assert_text
-      value: "What is the freezing point of water in degrees Celsius?"
-
-    - id: verify_option_a_10
-      action: assert_text
-      value: "0"
-
-    - id: verify_option_b_10
-      action: assert_text
-      value: "32"
-
-    - id: verify_option_c_10
-      action: assert_text
-      value: "100"
-
-    - id: verify_option_d_10
-      action: assert_text
-      value: "-32"
-
-      #Answer
-    - id: click_option_b_10
-      action: click
-      target: "b) 0"
-
-
-      #Result page
-    - id: verify_congratulations_text
-      action: assert_text
-      value: "CONGRATULATIONS"
-
-    - id: verify_you_won_text
-      action: assert_text
-      value: "YOU WON"
-
-    - id: verify_score_text
-      action: assert_text
-      value: "Your Score :"
-
-    - id: verify_score_value
-      action: assert_text
-      value: "10 of 10"
-
-    - id: verify_my_rewards_button
-      action: assert_text
-      value: "MY REWARDS"
-
-    - id: verify_back_to_home_button
-      action: assert_text
-      value: "BACK TO HOME"
-
-    #My rewards page
-    - id: click_my_rewards
-      action: click
-      target: "MY REWARDS"
-
-    - id: verify_my_rewards_page
-      action: assert_text
-      value: "My Rewards"
-
-    #    - id: verify_rewards_image
-    #      action: assert_image
-    #      description: "Green square image_under star"
-
-    - assertTextNotPresent:
-        text: "You haven't recevied any rewards yet."
-    - assertTextNotPresent:
-        text: "Play the quiz to earn rewards!"
-
-    - id: verify_back_to_home_button
-      action: click
-      value: "BACK TO HOME"
-
-      #verify successfuk navigation to Home screen
-    - assertText:
-        text: "Nudge Stories"
-
-
-  # Test Case: Verifying the forward and backward navigation on the quiz page for an existing user who completed the quiz and scored 10/10.
-testCase5:
-  name: "Verifying the forward and backward navigation inside the Quiz "
-  actions:
-    - launchApp: com.example.nudgetest.demoqa1
-    - tapOn:
-        text: "Track Quiz"
-    - assertText:
-        text: "MY REWARDS"
-    - assertText:
-        text: "VIEW RESPONSES"
-
-    #My rewards page
-    - id: click_my_rewards
-      action: click
-      target: "MY REWARDS"
-
-    - id: verify_my_rewards_page
-      action: assert_text
-      value: "My Rewards"
-
-    #    - id: verify_rewards_image
-    #      action: assert_image
-    #      description: "Green square image_under star"
-
-    - assertTextNotPresent:
-        text: "You haven't recevied any rewards yet."
-    - assertTextNotPresent:
-        text: "Play the quiz to earn rewards!"
-
-    - tapOn:
-        selector: "//*[@content-desc='Navigate back']"
-    - waitForTimeout:
-        timeout: 2000
-
-    #My rewards page
-    - id: click_view_response
-      action: click
-      target: "VIEW RESPONSES"
-
-    #Clicking top left back navigation to verify it should back to Track quiz land page
-    - id: verify_question_text_1
-      action: assert_text
-      value: "What is the capital of France?"
-
-    - id: click_next_1
-      action: click
-      target: "top_left_corner"
-
-    - assertText:
-        text: "MY REWARDS"
-    - assertText:
-        text: "VIEW RESPONSES"
-
-    #Verify the response of each page from 1 to 10
-
-    - id: click_view_response
-      action: click
-      target: "VIEW RESPONSES"
-
-    - id: verify_question_text_1
-      action: assert_text
-      value: "What is the capital of France?"
-
-    - id: verify_correct_answer_1
-      action: assert_text
-      value: "Correct Answer is : c) Paris"
-
-    - id: verify_user_response_1
-      action: assert_text
-      value: "Your Response : c) Paris"
-
-    - id: click_next_1
-      action: click
-      target: "top_left_corner"
-
-    - id: verify_question_text_2
-      action: assert_text
-      value: "Which element has the chemical symbol 'O'?"
-
-    - id: verify_correct_answer_2
-      action: assert_text
-      value: "Correct Answer is :"
-
-    - id: verify_user_response_2
-      action: assert_text
-      value: "Your Response : b) Oxygen"
-
-    - id: click_next_2
-      action: click
-      target: "top_right_corner"
-
-    - id: verify_question_text_3
-      action: assert_text
-      value: "Who wrote 'Romeo and Juliet'?"
-
-    - id: verify_correct_answer_3
-      action: assert_text
-      value: "Correct Answer is : c) William Shakespeare"
-
-    - id: verify_user_response_3
-      action: assert_text
-      value: "Your Response : c) William Shakespeare"
-
-    - id: click_next_3
-      action: click
-      target: "top_right_corner"
-
-    - id: verify_question_text_4
-      action: assert_text
-      value: "What is the largest planet in our solar system?"
-
-    - id: verify_correct_answer_4
-      action: assert_text
-      value: "Correct Answer is : c) Jupiter"
-
-    - id: verify_user_response_4
-      action: assert_text
-      value: "Your Response : c) Jupiter"
-
-    - id: click_next_4
-      action: click
-      target: "top_right_corner"
-
-    - id: verify_question_text_5
-      action: assert_text
-      value: "In which year did the Titanic sink?"
-
-    - id: verify_correct_answer_5
-      action: assert_text
-      value: "Correct Answer is : b) 1912"
-
-    - id: verify_user_response_5
-      action: assert_text
-      value: "Your Response : b) 1912"
-
-    - id: click_next_5
-      action: click
-      target: "top_right_corner"
-
-    - id: verify_question_text_6
-      action: assert_text
-      value: "What is the smallest prime number?"
-
-    - id: verify_correct_answer_6
-      action: assert_text
-      value: "Correct Answer is : c) 2"
-
-    - id: verify_user_response_6
-      action: assert_text
-      value: "Your Response : c) 2"
-
-    - id: click_next_6
-      action: click
-      target: "top_right_corner"
-
-    - id: verify_question_text_7
-      action: assert_text
-      value: "Who painted the Mona Lisa?"
-
-    - id: verify_correct_answer_7
-      action: assert_text
-      value: "Correct Answer is : c) Leonardo da Vinci"
-
-    - id: verify_user_response_7
-      action: assert_text
-      value: "Your Response : c) Leonardo da Vinci"
-
-    - id: click_next_7
-      action: click
-      target: "top_right_corner"
-
-    - id: verify_question_text_8
-      action: assert_text
-      value: "What is the main ingredient in guacamole?"
-
-    - id: verify_correct_answer_8
-      action: assert_text
-      value: "Correct Answer is : b) Avocado"
-
-    - id: verify_user_response_8
-      action: assert_text
-      value: "Your Response : b) Avocado"
-
-    - id: click_next_8
-      action: click
-      target: "top_right_corner"
-
-    - id: verify_question_text_9
-      action: assert_text
-      value: "Which country is known as the Land of the Rising Sun?"
-
-    - id: verify_correct_answer_9
-      action: assert_text
-      value: "Correct Answer is : b) Japan"
-
-    - id: verify_user_response_9
-      action: assert_text
-      value: "Your Response : b) Japan"
-
-    - id: click_next_9
-      action: click
-      target: "top_right_corner"
-
-    - id: verify_question_text_10
-      action: assert_text
-      value: "What is the freezing point of water in degrees Celsius?"
-
-    - id: verify_correct_answer_10
-      action: assert_text
-      value: "Correct Answer is : a) 0"
-
-    - id: verify_user_response_10
-      action: assert_text
-      value: "Your Response : a) 0"
-
-    - id: click_next_10
-      action: click
-      target: "top_right_corner"
-
-      #Result page
-    - id: verify_congratulations_text
-      action: assert_text
-      value: "CONGRATULATIONS"
-
-    - id: verify_you_won_text
-      action: assert_text
-      value: "YOU WON"
-
-    - id: verify_score_text
-      action: assert_text
-      value: "Your Score :"
-
-    - id: verify_score_value
-      action: assert_text
-      value: "10 of 10"
-
-    - id: verify_my_rewards_button
-      action: assert_text
-      value: "MY REWARDS"
-
-    - id: verify_back_to_home_button
-      action: assert_text
-      value: "BACK TO HOME"
-
-    - id: verify_back_to_home_button
-      action: click
-      value: "BACK TO HOME"
-
-      #verify successfuk navigation to Home screen
-    - assertText:
-        text: "Nudge Stories"
-
-    # Close the app after the test is done
-    - executeShellCommand:
-        command: "adb shell am force-stop com.example.nudgetest.demoqa1"
-
-
-# Test Case: Deleting an existing user who has completed or not completed the quiz, and attempting to access TrackQuiz after deleting the user.
-testCase6:
-  name: "Delete the User and Access the Track Quiz page"
-  actions:
-    - launchApp: com.example.nudgetest.demoqa1
-
-    # Click on "Track Quiz"
-    - tapOn:
-        text: "Track Quiz"
-    - waitForTimeout:
-        timeout: 2000
-    - assertText:
-        text: "Play"
-    - assertText:
-        text: "bigbasket"
-
-    - executeShellCommand:
-      command: "adb shell input keyevent 4"
-      #verify successfuk navigation to Home screen
-    - assertText:
-        text: "Nudge Stories"
-
-    - tapOn:
-        text: "Delete User"
-
-    # Click on "Track Quiz"
-    - tapOn:
-        text: "Track Quiz"
-    - waitForTimeout:
-        timeout: 2000
-    - assertTextNotPresent:
-        text: "Play"
-    - assertTextNotPresent:
-        text: "bigbasket"
-
-    # Close the app after the test is done
-    - executeShellCommand:
-        command: "adb shell am force-stop com.example.nudgetest.demoqa1"
-
-
-  # Test Case: Verify the auto navigation part after time out of each quiz and Navigate to Final result page
-testCase7:
-  name: "Track Quiz New Login User - Verifying auto Navigation and Score of 0/10"
-  actions:
-    - launchApp: com.example.nudgetest.demoqa1
-    - tapOn:
-        text: "User Identifier"
-    - tapOn:
-        text: "Track Quiz"
-    - tapOn:
-        text: "START QUIZ"
-
-    # Wait for the total time of the quiz
-    - waitForTimeout:
-        timeout: 600000 # Wait for 10 minutes (600 seconds)
-
-      #Result page - Verify Score of 0/10
-    - id: verify_congratulations_text
-      action: assert_text
-      value: "BETTER LUCK NEXT TIME"
-
-    - id: verify_score_text
-      action: assert_text
-      value: "Your Score :"
-
-    - id: verify_score_value
-      action: assert_text
-      value: "0 of 10" # Verify the score is 0/10
-
-    - id: verify_my_rewards_button
-      action: assert_text
-      value: "MY REWARDS"
-
-    - id: verify_back_to_home_button
-      action: assert_text
-      value: "BACK TO HOME"
-
-    #My rewards page
-    - id: click_my_rewards
-      action: click
-      target: "MY REWARDS"
-
-    - id: verify_my_rewards_page
-      action: assert_text
-      value: "My Rewards"
-    - assertTextPresent:
-        text: "You haven't recevied any rewards yet."
-    - assertTextPresent:
-        text: "Play the quiz to earn rewards!"
-
-    - id: verify_back_to_home_button
-      action: click
-      value: "BACK TO HOME"
-
-      #verify successfuk navigation to Home screen
-    - assertText:
-        text: "Nudge Stories"
-
-    # Delete the user - Helps to do the next test flow
-    - id: tap_delete_user
-      action: tapOn
-      target:
-        text: "Delete User"
-
-    # Close the app after the test is done
-    - executeShellCommand:
-        command: "adb shell am force-stop com.example.nudgetest.demoqa1"
-
-
-  # Test Case: Verify the quiz timer running on the background
-testCase8:
-  name: "Track Quiz New Login User - Timer should running in background"
-  actions:
-    - launchApp: com.example.nudgetest.demoqa1
-    - tapOn:
-        text: "User Identifier"
-    - tapOn:
-        text: "Track Quiz"
-
-    - tapOn:
-        text: "START QUIZ"
-
-      #1st Quiz Question
-    - id: verify_question_text_1
-      action: assert_text
-      value: "What is the capital of France?"
-
-    # Wait for the total time of the quiz
-    - waitForTimeout:
-        timeout: 10000 # Wait for 10 second (10 seconds)
-
-    # Open recent apps and bring the app to the foreground
-    - executeShellCommand:
-        command: "adb shell input keyevent 3" #go to the device home screen
-    - executeShellCommand:
-        command: "adb shell input keyevent 187" # Recent apps button
-
-    # Bring the app back to the foreground from recent apps
-    - executeShellCommand:
-        command: "adb shell input keyevent 79" # Simulate tapping on the app in recent apps
-
-    - id: verify_timer_less_than_50
-      action: assert
-      condition: "timer_value < 50"
-      target: "timer_element"
-
-    # Close the app after the test is done
-    - executeShellCommand:
-        command: "adb shell am force-stop com.example.nudgetest.demoqa1"
-
-  # Test Case: Verify that the quiz restarts from the beginning if it is killed and relaunched in between
-testCase9:
-  name: "Track Quiz New Login User - Timer should running in background"
-  actions:
-    - launchApp: com.example.nudgetest.demoqa1
-    - tapOn:
-        text: "User Identifier"
-    - tapOn:
-        text: "Track Quiz"
-
-    - tapOn:
-        text: "START QUIZ"
-
-      #1st Quiz Question
-    - id: verify_question_text_1
-      action: assert_text
-      value: "What is the capital of France?"
-
-    #Answer
-    - id: click_option_c_1
-      action: click
-      target: "c) Paris"
-
-    #2nd Quiz Question
-    - id: verify_question_text_2
-      action: assert_text
-      value: "Which element has the chemical symbol 'O'?"
-
-      #now navigated to 2nd Question
-
-      #Kill the app and again start the quiz and verify -> should start from 1st question
-
-    # Kill the app
-    - executeShellCommand:
-        command: "adb shell am force-stop com.example.nudgetest.demoqa1"
-    - launchApp: com.example.nudgetest.demoqa1
-    - tapOn:
-        text: "User Identifier"
-    - tapOn:
-        text: "Track Quiz"
-
-    - tapOn:
-        text: "START QUIZ"
-
-      #1st Quiz Question
-    - id: verify_question_text_1
-      action: assert_text
-      value: "What is the capital of France?"
-
-    # Close the app after the test is done
-    - executeShellCommand:
-        command: "adb shell am force-stop com.example.nudgetest.demoqa1"
-
-
-  # Test Case: Verify Quiz Behavior with 5 Unanswered, 3 Correct, and 2 Incorrect Answers Out of 10 Questions
-testCase10:
-  name: "Track Quiz New Login User - Different quiz behaviour"
-  actions:
-    - launchApp: com.example.nudgetest.demoqa1
-    - tapOn:
-        text: "User Identifier"
-    - tapOn:
-        text: "Track Quiz"
-    - tapOn:
-        text: "START QUIZ"
-      #1st Quiz Question
-    - id: verify_question_text_1
-      action: assert_text
-      value: "What is the capital of France?"
-
-    # Wait for 5 minutes (300 seconds) #Unanswer for 5 question
-    # Wait for the total time of the quiz
-    - waitForTimeout:
-        timeout: 300000
-
-      #Correct Answer for 3
-      #6th Quiz Question
-    - id: verify_question_text_6
-      action: assert_text
-      value: "What is the smallest prime number?"
-
-    #Answer
-    - id: click_option_c_6
-      action: click
-      target: "c) 2"
-
-
-      #7th Quiz Question
-    - id: verify_question_text_7
-      action: assert_text
-      value: "Who painted the Mona Lisa?"
-
-    #Answer
-    - id: click_option_c_7
-      action: click
-      target: "c) Leonardo da Vinci"
-
-
-      #8th Quiz Question
-    - id: verify_question_text_8
-      action: assert_text
-      value: "What is the main ingredient in guacamole?"
-
-    #Answer
-    - id: click_option_b_8
-      action: click
-      target: "b) Avocado"
-
-      #wrong answer for 2 question
-      #9th Quiz Question
-    - id: verify_question_text_9
-      action: assert_text
-      value: "Which country is known as the Land of the Rising Sun?"
-
-    #Wrong Answer
-    - id: click_option_b_9
-      action: click
-      target: "c) Thailand"
-
-
-      #10th Quiz Question
-    - id: verify_question_text_10
-      action: assert_text
-      value: "What is the freezing point of water in degrees Celsius?"
-
-      #Wrong Answer
-    - id: click_option_b_10
-      action: click
-      target: "a) 58"
-
-      #Result page - Verify Score of 0/10
-    - id: verify_congratulations_text
-      action: assert_text
-      value: "BETTER LUCK NEXT TIME"
-
-    - id: verify_score_text
-      action: assert_text
-      value: "Your Score :"
-
-    - id: verify_score_value
-      action: assert_text
-      value: "3 of 10"
-
-
-      #View the Response
-    #Verify the response of each page from 1 to 10
-    - id: click_view_response
-      action: click
-      target: "VIEW RESPONSES"
-
-    - id: verify_correct_answer_1
-      action: assert_text
-      value: "Correct Answer is : c) Paris"
-
-    - id: verify_user_response_1
-      action: assert_text
-      value: "Your Response : Not Answered"
-
-    - id: click_next_1
-      action: click
-      target: "top_left_corner"
-
-    - id: verify_correct_answer_2
-      action: assert_text
-      value: "Correct Answer is :"
-
-    - id: verify_user_response_2
-      action: assert_text
-      value: "Your Response : Not Answered"
-
-    - id: click_next_2
-      action: click
-      target: "top_right_corner"
-
-    - id: verify_correct_answer_3
-      action: assert_text
-      value: "Correct Answer is : c) William Shakespeare"
-
-    - id: verify_user_response_3
-      action: assert_text
-      value: "Your Response : Not Answered"
-
-    - id: click_next_3
-      action: click
-      target: "top_right_corner"
-
-    - id: verify_correct_answer_4
-      action: assert_text
-      value: "Correct Answer is : c) Jupiter"
-
-    - id: verify_user_response_4
-      action: assert_text
-      value: "Your Response : Not Answered"
-
-    - id: click_next_4
-      action: click
-      target: "top_right_corner"
-
-    - id: verify_correct_answer_5
-      action: assert_text
-      value: "Correct Answer is : b) 1912"
-
-    - id: verify_user_response_5
-      action: assert_text
-      value: "Your Response : Not Answered"
-
-    - id: click_next_5
-      action: click
-      target: "top_right_corner"
-
-    - id: verify_correct_answer_6
-      action: assert_text
-      value: "Correct Answer is : c) 2"
-
-    - id: verify_user_response_6
-      action: assert_text
-      value: "Your Response : c) 2"
-
-    - id: click_next_6
-      action: click
-      target: "top_right_corner"
-
-    - id: verify_correct_answer_7
-      action: assert_text
-      value: "Correct Answer is : c) Leonardo da Vinci"
-
-    - id: verify_user_response_7
-      action: assert_text
-      value: "Your Response : c) Leonardo da Vinci"
-
-    - id: click_next_7
-      action: click
-      target: "top_right_corner"
-
-    - id: verify_correct_answer_8
-      action: assert_text
-      value: "Correct Answer is : b) Avocado"
-
-    - id: verify_user_response_8
-      action: assert_text
-      value: "Your Response : b) Avocado"
-
-    - id: click_next_8
-      action: click
-      target: "top_right_corner"
-
-    - id: verify_correct_answer_9
-      action: assert_text
-      value: "Correct Answer is : b) Japan"
-
-    - id: verify_user_response_9
-      action: assert_text
-      value: "Your Response : c) Thailand"
-
-    - id: click_next_9
-      action: click
-      target: "top_right_corner"
-
-
-    - id: verify_correct_answer_10
-      action: assert_text
-      value: "Correct Answer is : a) 0"
-
-    - id: verify_user_response_10
-      action: assert_text
-      value: "Your Response : b) 32"
-
-    - id: click_next_10
-      action: click
-      target: "top_right_corner"
-
-
-    # Close the app after the test is done
-    - executeShellCommand:
-        command: "adb shell am force-stop com.example.nudgetest.demoqa1"
-
-
-
-
+# 5th Quiz Question
+- assertVisible: "In which year did the Titanic sink?"
+
+- assertVisible: "a) 1905"
+- assertVisible: "b) 1912"
+- assertVisible: "c) 1918"
+- assertVisible: "d) 1923"
+
+# Answer
+- tapOn:
+    point: "50%,64%" # b) 1912
+
+# 6th Quiz Question
+- assertVisible: "What is the smallest prime number?"
+
+- assertVisible: "a) 0"
+- assertVisible: "b) 1"
+- assertVisible: "c) 2"
+- assertVisible: "d) 3"
+
+# Answer
+- tapOn:
+    point: "50%,74%" # c) 2
+
+# 7th Quiz Question
+- assertVisible: "Who painted the Mona Lisa?"
+
+- assertVisible: "a) Vincent van Gogh"
+- assertVisible: "b) Pablo Picasso"
+- assertVisible: "c) Leonardo da Vinci"
+- assertVisible: "d) Claude Monet"
+
+# Answer
+- tapOn:
+    point: "50%,74%" # c) Leonardo da Vinci
+
+# 8th Quiz Question
+- assertVisible: "What is the main ingredient in guacamole?"
+
+- assertVisible: "a) Tomato"
+- assertVisible: "b) Avocado"
+- assertVisible: "c) Onion"
+- assertVisible: "d) Lemon"
+
+# Answer
+- tapOn:
+    point: "50%,64%" # b) Avocado
+
+# 9th Quiz Question
+- assertVisible: "Which country is known as the Land of the Rising Sun?"
+
+- assertVisible: "a) China"
+- assertVisible: "b) Japan"
+- assertVisible: "c) Thailand"
+- assertVisible: "d) South Korea"
+
+# Answer
+- tapOn:
+    point: "50%,64%" # b) Japan
+
+# 10th Quiz Question
+- assertVisible: "What is the freezing point of water in degrees Celsius?"
+
+- assertVisible: "a) 0"
+- assertVisible: "b) 32"
+- assertVisible: "c) 100"
+- assertVisible: "d) -32"
+
+# Answer
+- tapOn:
+    point: "50%,55%" # a) 0
+
+#Verifying results page
+- assertVisible: "Your Score :"
+- assertVisible: "10 of 10"
+- assertVisible: "MY REWARDS"
+- assertVisible: "BACK TO HOME"
+
+- killApp
+
+# View response of completed quiz
+
+- launchApp
+- tapOn:
+    text: "Track Quiz"
+
+- assertVisible: "VIEW RESPONSES"
+- tapOn: "VIEW RESPONSES"
+
+# Assert 1st Quiz Question
+- assertVisible: "What is the capital of France?"
+- assertVisible: "Correct Answer is : "
+- assertVisible: "Your Response : "
+#  tap right to navigate to next quest
+- tapOn:
+    point: "94%,8%"
+
+
+# Assert 2nd Quiz Question
+- assertVisible: "Which element has the chemical symbol 'O'?"
+- assertVisible: "Correct Answer is : "
+- assertVisible: "Your Response : "
+#  tap left to navigate back to previous quest
+- tapOn:
+    point: "6%,8%"
+
+# Assert 1st Quiz Question
+- assertVisible: "What is the capital of France?"
+- assertVisible: "Correct Answer is : "
+- assertVisible: "Your Response : "
+#  tap right to navigate to next quest
+- tapOn:
+    point: "94%,8%"
+
+- tapOn:
+    point: "94%,8%"
+
+# Assert 3rd Quiz Question
+- assertVisible: "Who wrote 'Romeo and Juliet'?"
+- assertVisible: "Correct Answer is : "
+- assertVisible: "Your Response : "
+- tapOn:
+    point: "94%,8%"
+
+# Assert 4th Quiz Question
+- assertVisible: "What is the largest planet in our solar system?"
+- assertVisible: "Correct Answer is : "
+- assertVisible: "Your Response : "
+- tapOn:
+    point: "94%,8%"
+# Assert 5th Quiz Question
+- assertVisible: "In which year did the Titanic sink?"
+- assertVisible: "Correct Answer is : "
+- assertVisible: "Your Response : "
+- tapOn:
+    point: "94%,8%"
+# Assert 6th Quiz Question
+- assertVisible: "What is the smallest prime number?"
+- assertVisible: "Correct Answer is : "
+- assertVisible: "Your Response : "
+- tapOn:
+    point: "94%,8%"
+# Assert 7th Quiz Question
+- assertVisible: "Who painted the Mona Lisa?"
+- assertVisible: "Correct Answer is : "
+- assertVisible: "Your Response : "
+- tapOn:
+    point: "94%,8%"
+# Assert 8th Quiz Question
+- assertVisible: "What is the main ingredient in guacamole?"
+- assertVisible: "Correct Answer is : "
+- assertVisible: "Your Response : "
+- tapOn:
+    point: "94%,8%"
+# Assert 9th Quiz Question
+- assertVisible: "Which country is known as the Land of the Rising Sun?"
+- assertVisible: "Correct Answer is : "
+- assertVisible: "Your Response : "
+- tapOn:
+    point: "94%,8%"
+# Assert 10th Quiz Question
+- assertVisible: "What is the freezing point of water in degrees Celsius?"
+- assertVisible: "Correct Answer is : "
+- assertVisible: "Your Response : "
+- tapOn:
+    point: "94%,8%"
+
+#Verifying results page
+- assertVisible: "Your Score :"
+- assertVisible: "10 of 10"
+- assertVisible: "MY REWARDS"
+- assertVisible: "BACK TO HOME"
+
+- killApp
+
+#Verifying autonagition after each question complete for 10 seconds and reach 0/ 10
+- launchApp
+- tapOn:
+    text: "Delete User"
+- tapOn:
+    text: "User Identifier"
+- tapOn:
+    text: "Track Quiz"
+- tapOn:
+    text: "START QUIZ"
+
+- extendedWaitUntil:
+    visible: "Your Score :"
+    timeout: 10000      # 10 seconfs ideal to complete 10 question
+
+#Verifying results page
+- assertVisible: "Your Score :"
+- assertVisible: "0 of 10"
+- assertVisible: "MY REWARDS"
+- assertVisible: "BACK TO HOME"
+
+#  0/ 10
+- tapOn:
+    text: "MY REWARDS"
+
+#Verifying the content inside the My reward page
+- assertVisible: "My Rewards"
+- assertVisible: "My Rewards"
+- assertVisible: "You haven't received any rewards yet.
+
+    Play the quiz to earn rewards!"
+
+- tapOn:
+    text: "BACK TO HOME"
+- assertVisible:
+    text: "User Identifier"
+- assertVisible:
+    text: "Track Story"
+
+#Verifying the result for 0/ 10 user, who not answered anything
+- tapOn:
+    text: "Track Quiz"
+
+- assertVisible: "VIEW RESPONSES"
+- tapOn: "VIEW RESPONSES"
+
+# Assert 1st Quiz Question
+- assertVisible: "What is the capital of France?"
+- assertVisible: "Correct Answer is : "
+- assertVisible: "Your Response : "
+#  tap right to navigate to next quest
+- tapOn:
+    point: "94%,8%"
+
+# Assert 2nd Quiz Question
+- assertVisible: "Which element has the chemical symbol 'O'?"
+- assertVisible: "Correct Answer is : "
+- assertVisible: "Your Response : "
+#  tap left to navigate back to previous quest
+- tapOn:
+    point: "94%,8%"
+
+# Assert 3rd Quiz Question
+- assertVisible: "Who wrote 'Romeo and Juliet'?"
+- assertVisible: "Correct Answer is : "
+- assertVisible: "Your Response : "
+- tapOn:
+    point: "94%,8%"
+
+# Assert 4th Quiz Question
+- assertVisible: "What is the largest planet in our solar system?"
+- assertVisible: "Correct Answer is : "
+- assertVisible: "Your Response : "
+- tapOn:
+    point: "94%,8%"
+# Assert 5th Quiz Question
+- assertVisible: "In which year did the Titanic sink?"
+- assertVisible: "Correct Answer is : "
+- assertVisible: "Your Response : "
+- tapOn:
+    point: "94%,8%"
+# Assert 6th Quiz Question
+- assertVisible: "What is the smallest prime number?"
+- assertVisible: "Correct Answer is : "
+- assertVisible: "Your Response : "
+- tapOn:
+    point: "94%,8%"
+# Assert 7th Quiz Question
+- assertVisible: "Who painted the Mona Lisa?"
+- assertVisible: "Correct Answer is : "
+- assertVisible: "Your Response : "
+- tapOn:
+    point: "94%,8%"
+# Assert 8th Quiz Question
+- assertVisible: "What is the main ingredient in guacamole?"
+- assertVisible: "Correct Answer is : "
+- assertVisible: "Your Response : "
+- tapOn:
+    point: "94%,8%"
+# Assert 9th Quiz Question
+- assertVisible: "Which country is known as the Land of the Rising Sun?"
+- assertVisible: "Correct Answer is : "
+- assertVisible: "Your Response : "
+- tapOn:
+    point: "94%,8%"
+# Assert 10th Quiz Question
+- assertVisible: "What is the freezing point of water in degrees Celsius?"
+- assertVisible: "Correct Answer is : "
+- assertVisible: "Your Response : "
+- tapOn:
+    point: "94%,8%"
+
+#Verifying results page
+- assertVisible: "Your Score :"
+- assertVisible: "0 of 10"
+- assertVisible: "MY REWARDS"
+- assertVisible: "BACK TO HOME"
+
+- killApp
+
+#Verifying back navigation from 1st quiz response -> Navigate to Track quiz page.
+
+- launchApp
+
+- tapOn:
+    text: "Track Quiz"
+
+- assertVisible: "VIEW RESPONSES"
+- tapOn: "VIEW RESPONSES"
+# Assert 1st Quiz Question
+- assertVisible: "What is the capital of France?"
+- assertVisible: "Correct Answer is : "
+- assertVisible: "Your Response : "
+
+# Navigate back using back <-
+- tapOn:
+    point: "6%,8%"
+
+- assertVisible: "9. Review Your Answers"
+- assertVisible: "10. Don’t Overthink"
+- assertVisible: "MY REWARDS"
+- assertVisible: "START QUIZ"
+
+- killApp
+-
+# Test Case: Verify Quiz Behavior with 5 Unanswered, 3 Correct, and 2 Incorrect Answers Out of 10 Questions
+- launchApp
+- tapOn:
+    text: "Delete User"
+- tapOn:
+    text: "User Identifier"
+- tapOn:
+    text: "Track Quiz"
+- tapOn:
+    text: "START QUIZ"
+
+- extendedWaitUntil:
+    visible: "What is the smallest prime number?"
+    timeout: 5000      #5 seconds incomplete
+
+    # Correct Answer for 3
+    #6th Quiz Question
+- assertVisible: "What is the smallest prime number?"
+
+  # Answer
+- tapOn:
+    text: "c) 2"
+
+    #7th Quiz Question
+- assertVisible: "Who painted the Mona Lisa?"
+
+# Answer
+- tapOn:
+    text: "c) Leonardo da Vinci"
+
+    #8th Quiz Question
+- assertVisible: "What is the main ingredient in guacamole?"
+
+# Answer
+- tapOn:
+    text: "b) Avocado"
+
+# Wrong Answer for 2 questions
+#9th Quiz Question
+- assertVisible: "Which country is known as the Land of the Rising Sun?"
+
+# Incorrect Answer
+- tapOn:
+    text: "a) China"
+
+    #10th Quiz Question
+- assertVisible: "What is the freezing point of water in degrees Celsius?"
+
+# Incorrect Answer
+- tapOn:
+    text: "d) -32"
+
+#Verifying results page
+- assertVisible: "Your Score :"
+- assertVisible: "3 of 10"
+- assertVisible: "MY REWARDS"
+- assertVisible: "BACK TO HOME"
 
 
 
